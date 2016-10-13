@@ -1,0 +1,8 @@
+/* Le body prend toute la taille disponible avec viewport */
+body {
+    display:flex;
+    margin:0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
