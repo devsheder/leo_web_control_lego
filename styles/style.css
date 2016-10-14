@@ -19,5 +19,5 @@ div.row {
 }
 
 div.cell {
-    background: url("../images/pin_gris.svg");
+    background: url("../images/pin_gris.svg") no-repeat;
 }
