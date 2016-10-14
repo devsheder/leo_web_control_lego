@@ -29,7 +29,7 @@ window.onload = function () {
       rowDiv.appendChild(cellDiv);
     }
     
-    document.appendChild(rowDiv);
+    document.body.appendChild(rowDiv);
   }
   
 };
