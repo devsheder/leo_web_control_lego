@@ -28,15 +28,17 @@ window.onload = function () {
       cellDiv.style.width = widthHeigthBg+"px";
       cellDiv.style.backgroundSize = widthHeigthBg+"px " + widthHeigthBg+"px";
       
-      var toDraw = leoDraw.filter(function (element) {
-        var isInX = j >= element.x_start && j <= element.x_end;
-        var isInY = i >= element.y_start && i <= element.y_end;
-        return isInX && isInY;
+      mainPageDraw.forEach(function(draw) {
+        var toDraw = draw.filter(function (element) {
+          var isInX = j >= element.x_start && j <= element.x_end;
+          var isInY = i >= element.y_start && i <= element.y_end;
+          return isInX && isInY;
+        });
+
+        if (toDraw && toDraw.length > 0) {
+          cellDiv.className = toDraw[0].className;
+        }
       });
-      
-      if (toDraw && toDraw.length > 0) {
-        cellDiv.className = toDraw[0].className;
-      }
       
       rowDiv.appendChild(cellDiv);
     }
@@ -53,5 +55,14 @@ var leoDraw = [
     y_start:4,
     y_end:8,
     className:"cell_selected"
+  },
+  {
+    x_start:5,
+    x_end:7,
+    y_start:8,
+    y_end:8,
+    className:"cell_selected"
   }
 ]
+
+var mainPageDraw = [leoDraw];
