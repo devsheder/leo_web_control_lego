@@ -4,13 +4,20 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    
     display:flex;
-    flex-direction: row;
-    align-items:left;
+    flex-direction:column;
+    align-items:center;
 }
 
-div.default_background {
-    background: url("../images/pin_gris.svg") 32px 32px;
-    width:32px;
-    height:32px;
+div.row {
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+}
+
+div.cell {
+    background: url("../images/pin_gris.svg");
 }
