@@ -46,8 +46,6 @@ window.onload = function () {
   
 };
 
-function 
-
 var leoDraw = [
   {
     x_start:4,
