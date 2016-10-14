@@ -34,8 +34,8 @@ window.onload = function () {
         return isInX && isInY;
       });
       
-      if (toDraw) {
-        cellDiv.className = toDraw.className;
+      if (toDraw && toDraw.length > 0) {
+        cellDiv.className = toDraw[0].className;
       }
       
       rowDiv.appendChild(cellDiv);
