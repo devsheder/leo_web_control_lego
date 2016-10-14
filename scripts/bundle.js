@@ -49,49 +49,49 @@ window.onload = function () {
 };
 
 var leoTitleDraw = [
-  {
+  {/*L : Trait vertical*/
     x_start:4,
     x_end:4,
     y_start:4,
     y_end:8,
     className:"cell_selected"
   },
-  {
+  {/*L : Trait horizontal*/
     x_start:5,
     x_end:7,
     y_start:8,
     y_end:8,
     className:"cell_selected"
   },
-  {
+  {/*E : Trait horizontal haut*/
     x_start:9,
     x_end:12,
     y_start:4,
     y_end:4,
     className:"cell_selected"
   },
-  {
+  {/*E : Point en dessous du trait horizontal haut*/
     x_start:9,
     x_end:9,
     y_start:5,
     y_end:5,
     className:"cell_selected"
   },
-  {
+  {/*E : Trait horizontal du milieu*/
     x_start:10,
     x_end:11,
     y_start:6,
     y_end:6,
     className:"cell_selected"
   },
-  {
-    x_start:12,
-    x_end:12,
+  {/*E : Point au dessus du trait horizontal bas*/
+    x_start:9,
+    x_end:9,
     y_start:7,
     y_end:7,
     className:"cell_selected"
   },
-  {
+  {/*E : trait horizontal bas*/
     x_start:9,
     x_end:12,
     y_start:8,
