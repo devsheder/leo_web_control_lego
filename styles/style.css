@@ -26,6 +26,6 @@ div.cell_selected {
     background: url("../images/pin_bleu.svg") no-repeat center;
 }
 
-div.cell_button {
+div.cell_unselected {
     background: url("../images/pin_grisclair.svg") no-repeat center;
 }
