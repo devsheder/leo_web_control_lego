@@ -18,6 +18,14 @@ div.row {
     width:100%;
 }
 
-div.cell {
+div.cell_default {
     background: url("../images/pin_gris.svg") no-repeat center;
+}
+
+div.cell_selected {
+    background: url("../images/pin_bleu.svg") no-repeat center;
+}
+
+div.cell_button {
+    background: url("../images/pin_grisclair.svg") no-repeat center;
 }
