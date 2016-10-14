@@ -6,7 +6,7 @@ window.onload = function () {
   var windowWidth = parseInt(window.screen.width);
   
   // nombre de colonnes fixé
-  var nbColumns = 18;
+  var nbColumns = 20;
   
   // largeur/hauteur du background de chaque élément
   var widthHeigthBg = Math.trunc(windowWidth / nbColumns);
