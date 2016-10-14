@@ -52,78 +52,78 @@ var leoTitleDraw = [
   {/*L : Trait vertical*/
     x_start:3,
     x_end:3,
-    y_start:4,
-    y_end:8,
+    y_start:2,
+    y_end:6,
     className:"cell_selected"
   },
   {/*L : Trait horizontal*/
     x_start:4,
     x_end:6,
-    y_start:8,
-    y_end:8,
+    y_start:6,
+    y_end:6,
     className:"cell_selected"
   },
   {/*E : Trait horizontal haut*/
     x_start:8,
     x_end:11,
+    y_start:2,
+    y_end:2,
+    className:"cell_selected"
+  },
+  {/*E : Point en dessous du trait horizontal haut*/
+    x_start:8,
+    x_end:8,
+    y_start:3,
+    y_end:3,
+    className:"cell_selected"
+  },
+  {/*E : Trait horizontal du milieu*/
+    x_start:9,
+    x_end:10,
     y_start:4,
     y_end:4,
     className:"cell_selected"
   },
-  {/*E : Point en dessous du trait horizontal haut*/
+  {/*E : Point au dessus du trait horizontal bas*/
     x_start:8,
     x_end:8,
     y_start:5,
     y_end:5,
     className:"cell_selected"
   },
-  {/*E : Trait horizontal du milieu*/
-    x_start:9,
-    x_end:10,
-    y_start:6,
-    y_end:6,
-    className:"cell_selected"
-  },
-  {/*E : Point au dessus du trait horizontal bas*/
-    x_start:8,
-    x_end:8,
-    y_start:7,
-    y_end:7,
-    className:"cell_selected"
-  },
   {/*E : trait horizontal bas*/
     x_start:8,
     x_end:11,
-    y_start:8,
-    y_end:8,
+    y_start:6,
+    y_end:6,
     className:"cell_selected"
   },
   {/*O : Trait horizontal haut*/
     x_start:13,
     x_end:15,
-    y_start:4,
-    y_end:4,
+    y_start:2,
+    y_end:2,
     className:"cell_selected"
   },
   {/*O : Trait vertical gauche*/
     x_start:13,
     x_end:13,
-    y_start:5,
-    y_end:8,
+    y_start:3,
+    y_end:6,
     className:"cell_selected"
   },
   {/*O : Trait vertical droite*/
     x_start:16,
     x_end:16,
-    y_start:5,
-    y_end:8,
+    y_start:3,
+    y_end:6,
     className:"cell_selected"
   },
   {/*O : Trait horizontal bas*/
     x_start:13,
     x_end:15,
-    y_start:8,
-    y_end:8,
+    y_start:6,
+    y_end:6,
     className:"cell_selected"
   }
 ]
