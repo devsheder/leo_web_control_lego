@@ -26,6 +26,7 @@ window.onload = function () {
       cellDiv.className = "cell";
       cellDiv.style.height = widthHeigthBg+"px";
       cellDiv.style.width = widthHeigthBg+"px";
+      cellDiv.style.backgroundSize = widthHeigthBg+"px " + widthHeigthBg+"px";
       rowDiv.appendChild(cellDiv);
     }
     
