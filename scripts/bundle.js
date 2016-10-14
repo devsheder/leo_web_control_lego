@@ -105,21 +105,21 @@ var leoTitleDraw = [
     y_end:4,
     className:"cell_selected"
   },
-  /*O : Trait vertical gauche*/
+  {/*O : Trait vertical gauche*/
     x_start:14,
     x_end:14,
     y_start:6,
     y_end:8,
     className:"cell_selected"
   },
-  /*O : Trait vertical droite*/
+  {/*O : Trait vertical droite*/
     x_start:17,
     x_end:17,
     y_start:6,
     y_end:8,
     className:"cell_selected"
   },
-  /*O : Trait horizontal bas*/
+  {/*O : Trait horizontal bas*/
     x_start:14,
     x_end:16,
     y_start:8,
