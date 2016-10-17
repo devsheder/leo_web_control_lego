@@ -179,7 +179,7 @@
                 }
 
                 var g = {
-                    classes : { normal : "grey upper", hover : "grey upper" },
+                    classes : { normal : "grey upper", hover : "blue upper" },
                     cells : [
                         [3,-6],[2,-6],[1,-6], [-1,-6],[-2,-6],[-3,-6],
                         [-3,-5],[-3,-4],[-3,-3], [-3,-2],[-3,-1],
@@ -191,11 +191,15 @@
                 }
 
                 var deco = {
-                    classes : { normal : "grey upper", hover : "grey upper" },
+                    classes : { normal : "grey upper", hover : "blue upper" },
                     cells : [
                         [1,9],[-1,9],[1,10], [-1,10],
                         [-2,8],[2,8],[-2,11],[2,11],
-                    ]
+                    ],
+                    onTouchEnd : function(){ 
+			console.log("end");
+			draw(connection);
+		    }
                 }
 
 
