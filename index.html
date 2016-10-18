@@ -113,7 +113,7 @@
 				}).then(device => {
 					deviceLeo = device;
 					// Connexion OK : récupération du service BT
-					device.gatt.connect().then(server => {
+					deviceLeo.gatt.connect().then(server => {
 						return server.getPrimaryService(uuidService);
 					}, error => {
 						alert("Erreur lors de la connexion à Léo : " + error);
@@ -175,7 +175,13 @@
                         [-2,-10],[-1,-10], [1,-10],[2,-10],
                         [-3,-9], [-2,-9],[-1,-9], [1,-9],[2,-9],[3,-9],
                         [-4,-8],[-3,-8], [-2,-8],[-1,-8], [1,-8],[2,-8],[3,-8],[4,-8]
-                    ]
+                    ],
+                    onTouchStart : function(){
+			    _callWrite("top");
+		    },
+                    onTouchEnd : function(){
+			    _callWrite("stop");
+		    }
                 }
 
                 var bottom = {
@@ -185,7 +191,13 @@
                         [-2,4],[-1,4], [1,4],[2,4],
                         [-3,3], [-2,3],[-1,3], [1,3],[2,3],[3,3],
                         [-4,2],[-3,2], [-2,2],[-1,2], [1,2],[2,2],[3,2],[4,2]
-                    ]
+                    ],
+                    onTouchStart : function(){
+			    _callWrite("bottom");
+		    },
+                    onTouchEnd : function(){
+			    _callWrite("stop");
+		    }
                 }
 
                 var left = {
@@ -195,7 +207,13 @@
                         [-7,-5],[-7,-4], [-7,-3],[-7,-2],
                         [-6,-6],[-6,-5],[-6,-4], [-6,-3],[-6,-2],[-6,-1],
                         [-5,-7],[-5,-6],[-5,-5],[-5,-4], [-5,-3],[-5,-2],[-5,-1],[-5,1],
-                    ]
+                    ],
+                    onTouchStart : function(){
+			    _callWrite("left");
+		    },
+                    onTouchEnd : function(){
+			    _callWrite("stop");
+		    }
                 }
 
                 var right = {
@@ -205,7 +223,13 @@
                         [7,-5],[7,-4], [7,-3],[7,-2],
                         [6,-6],[6,-5],[6,-4], [6,-3],[6,-2],[6,-1],
                         [5,-7],[5,-6],[5,-5],[5,-4], [5,-3],[5,-2],[5,-1],[5,1],
-                    ]
+                    ],
+                    onTouchStart : function(){
+			    _callWrite("right");
+		    },
+                    onTouchEnd : function(){
+			    _callWrite("stop");
+		    }
                 }
 
                 var g = {
@@ -227,7 +251,7 @@
                         [-2,8],[2,8],[-2,11],[2,11],
                     ],
                     onTouchEnd : function(){ 
-			console.log("end");
+			_disconnect();
 			draw(connection);
 		    }
                 }
@@ -322,13 +346,49 @@
                     })
 
                 }
+		    
+	    	/**
+		 * Appel caractéristique write du service BT
+		 * @param message à envoyer
+		 * @private
+		 */
+		function _callWrite(message) {
+		    if(characteristicServiceArduino) {
+			    characteristicServiceArduino.writeValue(_str2ab(message)).then(value => {
+			    }, error => {
+				    alert("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
+				    _disconnect();
+				    draw(connection);
+			    });
+		    }
+		}
+		    
+	    	function _disconnect() {
+			if (deviceArduino) {
+				deviceLeo.gatt.disconnect();
+		    	}
+		}
+
+		/**
+		 *  Converti une String en ArrayBuffer
+		 * @param str à convertir
+		 * @returns {ArrayBuffer}
+		 */
+		function _str2ab(str) {
+		    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+		    var bufView = new Uint16Array(buf);
+		    for (var i=0, strLen=str.length; i < strLen; i++) {
+			bufView[i] = str.charCodeAt(i);
+		    }
+		    return buf;
+		}
 
                 jQuery(window).on('resize', _.debounce(function(){ draw(toShow) ; }, 1000));
 
 
                 // Point d'entrée
 
-                draw(connection) ;
+                draw(connection);
 
 
 
