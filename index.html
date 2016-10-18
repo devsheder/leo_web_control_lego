@@ -67,6 +67,9 @@
         </style>
 
         <script type="text/javascript">
+		var deviceLeo = null;
+		var characteristicServiceLeo = null;
+		var uuidService = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 
 
             $(function(){
@@ -98,8 +101,35 @@
                     ],
 		    onTouchStart : function(){ console.log("start") },
                     onTouchEnd : function(){ 
-			console.log("end");
-			draw(navigation);
+			if (!navigator.bluetooth) {
+				alert("Interface Bluetooth indisponible. Veuillez l'activier : chrome://flags/#enable-web-bluetooth");
+			} else {
+				// Demande connexion BT
+				navigator.bluetooth.requestDevice({
+					"filters": [{
+						"name": "LEO"
+					}],
+					optionalServices:[uuidService]
+				}).then(device => {
+					deviceLeo = device;
+					// Connexion OK : récupération du service BT
+					device.gatt.connect().then(server => {
+						return server.getPrimaryService(uuidService);
+					}, error => {
+						alert("Erreur lors de la connexion à Léo : " + error);
+					}).then(service => {
+							return service.getCharacteristic("6e400002-b5a3-f393-e0a9-e50e24dcca9e").then(characteristic => {
+							characteristicServiceLeo = characteristic;
+							alert("Vous êtes maintenant connecté à Léo... à vous de jouer !");
+							draw(navigation);
+						});
+					}, error => {
+						alert("Erreur lors de la connexion à Léo : " + error);
+					});
+				}, error => {
+					alert("Erreur lors de la connexion à Léo : " + error);
+				});
+			}
 		    }
                 }
 
