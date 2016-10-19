@@ -1,9 +1,14 @@
 $(function(){
 
     var oPopinHtml = $(".popin");
+    var drawNavigation = false;
 
     oPopinHtml.on("click", function(e) {
         oPopinHtml.hide();
+        if (drawNavigation) {
+            drawNavigation = false;
+            draw(navigation);
+        }
     });
 
     function _showMessage(message) {
@@ -17,7 +22,7 @@ $(function(){
     var uuidCharacteristicService = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
     var bytesWithHeader = [
-	     0xBA, // Static header
+	   0xBA, // Static header
        0xBA, // Static header
        0xAA, // Static header
        0xAA // Static header
@@ -76,7 +81,7 @@ $(function(){
                         return service.getCharacteristic(uuidCharacteristicService).then(characteristic => {
                             characteristicServiceLeo = characteristic;
                             _showMessage("Vous êtes maintenant connecté à Léo... à vous de jouer !");
-                            draw(navigation);
+                            drawNavigation = true;
                         });
                     }, error => {
                         _showMessage("Erreur lors de la connexion à Léo : " + error);
@@ -324,20 +329,6 @@ $(function(){
         if (deviceArduino) {
             deviceLeo.gatt.disconnect();
         }
-    }
-
-    /**
-     *  Converti une String en ArrayBuffer
-     * @param str à convertir
-     * @returns {ArrayBuffer}
-     */
-    function _str2ab(str) {
-        var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-        var bufView = new Uint16Array(buf);
-        for (var i=0, strLen=str.length; i < strLen; i++) {
-            bufView[i] = str.charCodeAt(i);
-        }
-        return buf;
     }
 
     function _dataToSend(headerBytes, commandByte, byteValue) {
