@@ -1,5 +1,16 @@
 $(function(){
 
+    var oPopinHtml = $(".popin");
+
+    oPopinHtml.on("click", function(e) {
+        oPopinHtml.hide();
+    });
+
+    function _showMessage(message) {
+        $(".popin .message").html(message);
+        oPopinHtml.show();
+    }
+
     var deviceLeo = null;
     var characteristicServiceLeo = null;
     var uuidService = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -34,7 +45,7 @@ $(function(){
         onTouchStart : function(){},
         onTouchEnd : function(){
             if (!navigator.bluetooth) {
-                alert("Interface Bluetooth indisponible. Veuillez l'activier : chrome://flags/#enable-web-bluetooth");
+                _showMessage("Interface Bluetooth indisponible. Veuillez l'activier : <a href='chrome://flags/#enable-web-bluetooth'>chrome://flags/#enable-web-bluetooth</a>");
             } else {
                 // Demande connexion BT
                 navigator.bluetooth.requestDevice({
@@ -48,18 +59,18 @@ $(function(){
                     deviceLeo.gatt.connect().then(server => {
                         return server.getPrimaryService(uuidService);
                     }, error => {
-                        alert("Erreur lors de la connexion à Léo : " + error);
+                        _showMessage("Erreur lors de la connexion à Léo : " + error);
                     }).then(service => {
                         return service.getCharacteristic(uuidCharacteristicService).then(characteristic => {
                             characteristicServiceLeo = characteristic;
-                            alert("Vous êtes maintenant connecté à Léo... à vous de jouer !");
+                            _showMessage("Vous êtes maintenant connecté à Léo... à vous de jouer !");
                             draw(navigation);
                         });
                     }, error => {
-                        alert("Erreur lors de la connexion à Léo : " + error);
+                        _showMessage("Erreur lors de la connexion à Léo : " + error);
                     });
                 }, error => {
-                    alert("Erreur lors de la connexion à Léo : " + error);
+                    _showMessage("Erreur lors de la connexion à Léo : " + error);
                 });
             }
         }
@@ -290,7 +301,7 @@ $(function(){
         if(characteristicServiceArduino) {
             characteristicServiceArduino.writeValue(_str2ab(message)).then(value => {
             }, error => {
-                alert("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
+                _showMessage("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
                 _disconnect();
                 draw(connection);
             });

@@ -53,3 +53,28 @@ body{
     left : 50% ;
     transform: translate3d(-50%, -50%, 0);
 }
+
+.popin {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 100%;
+    height: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
+    background: rgba(190,190,190,0.8);
+    z-index: 1000;
+}
+
+.popin .message {
+    background: rgb(255,255,255);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size:15pt;
+    margin:5%;
+    padding: 5%;
+}
