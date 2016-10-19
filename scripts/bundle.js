@@ -323,8 +323,8 @@ $(function(){
      * @private
      */
     function _callWrite(cCommande, valuesArray) {
-        if(characteristicServiceArduino) {
-            characteristicServiceArduino.writeValue(_dataToSend(bytesWithHeader, cCommande, valuesArray)).then(value => {
+        if(characteristicServiceLeo) {
+            characteristicServiceLeo.writeValue(_dataToSend(bytesWithHeader, cCommande, valuesArray)).then(value => {
             }, error => {
                 _showMessage("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
                 _disconnect();
