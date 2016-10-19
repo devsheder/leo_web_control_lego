@@ -2,18 +2,28 @@ $(function(){
 
     var oPopinHtml = $(".popin");
     var drawNavigation = false;
+    var isWebBTActivated = navigator.bluetooth;
 
     oPopinHtml.on("click", function(e) {
-        oPopinHtml.hide();
-        if (drawNavigation) {
-            drawNavigation = false;
-            draw(navigation);
+        // On ne cache pas la popin dans le cas où
+        // l'utilisateur n'a pas activé l'interface bluetooth
+        if (isWebBTActivated) {
+            oPopinHtml.hide();
+            if (drawNavigation) {
+                drawNavigation = false;
+                draw(navigation);
+            }
         }
     });
 
     function _showMessage(message) {
         $(".popin .message").html(message);
         oPopinHtml.show();
+    }
+
+    if (!isWebBTActivated) {
+        isActivateWebBT = true;
+        _showMessage("Interface Web Bluetooth indisponible. Veuillez l'activer :<p><a class='link' target=\"_blank\" href=\"chrome://flags/#enable-web-bluetooth\">chrome://flags/#enable-web-bluetooth</a></p>", true);
     }
 
     var deviceLeo = null;
@@ -61,9 +71,7 @@ $(function(){
         ],
         onTouchStart : function(){},
         onTouchEnd : function(){
-            if (!navigator.bluetooth) {
-                _showMessage("Interface Bluetooth indisponible. Veuillez l'activier : <a href='chrome://flags/#enable-web-bluetooth'>chrome://flags/#enable-web-bluetooth</a>");
-            } else {
+            if (navigator.bluetooth) {
                 // Demande connexion BT
                 navigator.bluetooth.requestDevice({
                     "filters": [{
