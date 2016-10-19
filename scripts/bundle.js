@@ -16,6 +16,18 @@ $(function(){
     var uuidService = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
     var uuidCharacteristicService = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
+    var bytesWithHeader = [
+	     0xBA, // Static header
+       0xBA, // Static header
+       0xAA, // Static header
+       0xAA // Static header
+     ];
+
+     // commande couleur LED
+     var cUpdateColor = 0x03;
+     // commande direction
+     var cDirection = 0x02;
+
   /*
 
    Shapes
@@ -121,10 +133,10 @@ $(function(){
             [-4,-8],[-3,-8], [-2,-8],[-1,-8], [1,-8],[2,-8],[3,-8],[4,-8]
         ],
         onTouchStart : function(){
-            _callWrite("top");
+            _callWrite(cDirection, [1]);
         },
         onTouchEnd : function(){
-            _callWrite("stop");
+            _callWrite(cDirection, [0]);
         }
     };
 
@@ -137,10 +149,10 @@ $(function(){
             [-4,2],[-3,2], [-2,2],[-1,2], [1,2],[2,2],[3,2],[4,2]
         ],
         onTouchStart : function(){
-            _callWrite("bottom");
+            _callWrite(cDirection, [2]);
         },
         onTouchEnd : function(){
-            _callWrite("stop");
+            _callWrite(cDirection, [0]);
         }
     };
 
@@ -153,10 +165,10 @@ $(function(){
             [-5,-7],[-5,-6],[-5,-5],[-5,-4], [-5,-3],[-5,-2],[-5,-1],[-5,1]
         ],
         onTouchStart : function(){
-            _callWrite("left");
+            _callWrite(cDirection, [3]);
         },
         onTouchEnd : function(){
-            _callWrite("stop");
+            _callWrite(cDirection, [0]);
         }
     };
 
@@ -169,10 +181,10 @@ $(function(){
             [5,-7],[5,-6],[5,-5],[5,-4], [5,-3],[5,-2],[5,-1],[5,1]
         ],
         onTouchStart : function(){
-            _callWrite("right");
+            _callWrite(cDirection, [4]);
         },
         onTouchEnd : function(){
-            _callWrite("stop");
+            _callWrite(cDirection, [0]);
         }
     };
 
@@ -297,9 +309,9 @@ $(function(){
      * @param message à envoyer
      * @private
      */
-    function _callWrite(message) {
+    function _callWrite(cCommande, valuesArray) {
         if(characteristicServiceArduino) {
-            characteristicServiceArduino.writeValue(_str2ab(message)).then(value => {
+            characteristicServiceArduino.writeValue(_dataToSend(bytesWithHeader, cCommande, valuesArray)).then(value => {
             }, error => {
                 _showMessage("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
                 _disconnect();
@@ -327,6 +339,24 @@ $(function(){
         }
         return buf;
     }
+
+    function _dataToSend(headerBytes, commandByte, byteValue) {
+        var buf = new ArrayBuffer(headerBytes.length + 1 + byteValue.length);
+        var bufView = new Uint8Array(buf);
+        var idx = 0;
+
+        for (let i = 0; i < headerBytes.length; i+=1) {
+          bufView[idx++] = headerBytes[i];
+        }
+
+        bufView[idx++] = commandByte;
+
+        // Gestion de l'inversion par paire des bytes
+        for (let i = 0; i < byteValue.length; i+=1) {
+          bufView[idx++] = byteValue[i];
+        }
+        return buf;
+}
 
     jQuery(window).on('resize', _.debounce(function(){ draw(toShow) ; }, 1000));
 
