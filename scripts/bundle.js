@@ -218,10 +218,10 @@ $(function(){
             [-1,-3]
         ],
         onTouchStart : function(){
-            _callWrite(cToupie, [5]);
+            _callWrite(cDirection, [5]);
         },
         onTouchEnd : function(){
-            _callWrite(cToupie, [0]);
+            _callWrite(cDirection, [0]);
         }
     };
 
