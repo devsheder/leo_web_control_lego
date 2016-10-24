@@ -46,6 +46,8 @@ $(function(){
      var cUpdateColor = 0x03;
      // commande direction
      var cDirection = 0x02;
+     // commande toupie
+     var cToupie = 0x05;
 
   /*
 
@@ -214,7 +216,13 @@ $(function(){
             [3,-2],[3,-3],[3,-4],
             [2,-4],[1,-4],[-1,-4],
             [-1,-3]
-        ]
+        ],
+        onTouchStart : function(){
+            _callWrite(cToupie, [5]);
+        },
+        onTouchEnd : function(){
+            _callWrite(cToupie, [0]);
+        }
     };
 
     var deco = {
@@ -337,12 +345,10 @@ $(function(){
 
     function _disconnect() {
         if (deviceLeo) {
-            deviceLeo.gatt.disconnect(res => {
-		    _showMessage("Déconnexion OK !");
-	    }, error => {
-	    });
+            deviceLeo.gatt.disconnect();
+            _showMessage("Déconnexion OK !");
         }
-    	drawConnection = true;
+        drawConnection = true;
     }
 
     function _dataToSend(headerBytes, commandByte, byteValue) {
