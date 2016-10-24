@@ -46,8 +46,6 @@ $(function(){
      var cUpdateColor = 0x03;
      // commande direction
      var cDirection = 0x02;
-     // commande toupie
-     var cToupie = 0x05;
 
   /*
 
