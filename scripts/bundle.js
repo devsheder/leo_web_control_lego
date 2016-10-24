@@ -2,6 +2,7 @@ $(function(){
 
     var oPopinHtml = $(".popin");
     var drawNavigation = false;
+    var drawConnection = false;
     var isWebBTActivated = navigator.bluetooth;
 
     oPopinHtml.on("click", function(e) {
@@ -12,7 +13,10 @@ $(function(){
             if (drawNavigation) {
                 drawNavigation = false;
                 draw(navigation);
-            }
+            } else if (drawConnection) {
+		drawConnection = false;
+                draw(connection);
+	    }	    
         }
     });
 
@@ -221,7 +225,6 @@ $(function(){
         ],
         onTouchEnd : function(){
             _disconnect();
-            draw(connection);
         }
     };
 
@@ -328,15 +331,15 @@ $(function(){
             }, error => {
                 _showMessage("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
                 _disconnect();
-                draw(connection);
             });
         }
     }
 
     function _disconnect() {
-        if (deviceArduino) {
+        if (deviceLeo) {
             deviceLeo.gatt.disconnect();
         }
+    	drawConnection = true;
     }
 
     function _dataToSend(headerBytes, commandByte, byteValue) {
@@ -355,7 +358,7 @@ $(function(){
           bufView[idx++] = byteValue[i];
         }
         return buf;
-}
+    }
 
     jQuery(window).on('resize', _.debounce(function(){ draw(toShow) ; }, 1000));
 
