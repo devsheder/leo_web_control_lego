@@ -337,7 +337,10 @@ $(function(){
 
     function _disconnect() {
         if (deviceLeo) {
-            deviceLeo.gatt.disconnect();
+            deviceLeo.gatt.disconnect(res => {
+		    _showMessage("Déconnexion OK !");
+	    }, error => {
+	    });
         }
     	drawConnection = true;
     }
