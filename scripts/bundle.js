@@ -389,7 +389,9 @@ $(function(){
         return buf;
     }
 
-    jQuery(window).on('resize', _.debounce(function(){ draw(toShow) ; }, 1000));
+    jQuery(window).on('resize', _.debounce(function(){
+	    draw(connection);
+    }, 1000));
 
 
     // Point d'entrée
