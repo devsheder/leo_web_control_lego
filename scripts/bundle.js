@@ -395,7 +395,7 @@ $(function(){
 	    } else {
                 draw(connection);
 	    }
-    }, 200));
+    }, 0));
 
 
     // Point d'entrée
