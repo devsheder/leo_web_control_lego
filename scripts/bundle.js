@@ -6,7 +6,7 @@ $(function(){
     var disconnectFromLeo = false;
     var isWebBTActivated = navigator.bluetooth;
 
-    oPopinHtml.on("click", function(e) {
+    oPopinHtml.on("touchend", function(e) {
         // On ne cache pas la popin dans le cas où
         // l'utilisateur n'a pas activé l'interface bluetooth
         if (isWebBTActivated) {
@@ -350,13 +350,13 @@ $(function(){
     }
 
     function _disconnect(withMessage) {
+        drawConnection = true;
         if (deviceLeo) {
             deviceLeo.gatt.disconnect();
             if (withMessage) {
                 _showMessage("Déconnexion OK !");
             }
         }
-        drawConnection = true;
     }
 
     function _dataToSend(headerBytes, commandByte, byteValue) {
