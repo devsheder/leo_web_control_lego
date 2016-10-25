@@ -3,7 +3,7 @@ $(function(){
     var oPopinHtml = $(".popin");
     var drawNavigation = false;
     var drawConnection = false;
-    var disconnectFromLeo = true;
+    var disconnectFromLeo = false;
     var isWebBTActivated = navigator.bluetooth;
 
     oPopinHtml.on("click", function(e) {
