@@ -357,11 +357,15 @@ $(function(){
      */
     function _disconnect(withMessage) {
         if (deviceLeo && deviceLeo.gatt.connected) {
-            drawConnection = true;
             deviceLeo.gatt.disconnect();
             if (withMessage) {
+	    	// Affichage du message de déconnexion
+	    	// donc il faut afficher l'écran de déconnexion après fermeture de la popin
+                drawConnection = true;
                 _showMessage("Déconnexion OK !");
-            }
+            } else {
+                draw(connection);
+	    }
         } else {
             draw(connection);
 	}
