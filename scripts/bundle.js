@@ -390,8 +390,12 @@ $(function(){
     }
 
     jQuery(window).on('resize', _.debounce(function(){
-	    draw(connection);
-    }, 1000));
+	    if (deviceLeo && deviceLeo.gatt.connected) {
+                draw(navigation);
+	    } else {
+                draw(connection);
+	    }
+    }, 200));
 
 
     // Point d'entrée
