@@ -16,13 +16,10 @@ $(function(){
                 draw(navigation);
             } else if (drawConnection) {
 		drawConnection = false;
-		if (disconnectFromLeo) {
-			disconnectFromLeo = false;
-			_disconnect();
-		} else {    
-			draw(connection);
-		}
-	    } 
+	    } else if (disconnectFromLeo) {
+		disconnectFromLeo = false;
+		_disconnect();
+	    }
         }
     });
 
@@ -83,6 +80,7 @@ $(function(){
         onTouchEnd : function(){
             if (navigator.bluetooth) {
                 // Demande connexion BT
+                _showMessage("Connexion à Léo en cours...");
                 navigator.bluetooth.requestDevice({
                     "filters": [{
                         "name": "LEO"
@@ -346,17 +344,26 @@ $(function(){
                 _showMessage("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
                 disconnectFromLeo = true;
             });
-        }
+        } else {
+		_disconnect();
+	}
     }
 
+    /**
+     * Permet de se déconnecter de Léo
+     * @param withMessage indique s'il faut afficher le message de déconnexion
+     * @private
+     */
     function _disconnect(withMessage) {
-        drawConnection = true;
-        if (deviceLeo) {
+        if (deviceLeo && deviceLeo.gatt.connected) {
+            drawConnection = true;
             deviceLeo.gatt.disconnect();
             if (withMessage) {
                 _showMessage("Déconnexion OK !");
             }
-        }
+        } else {
+            draw(connection);
+	}
     }
 
     function _dataToSend(headerBytes, commandByte, byteValue) {
