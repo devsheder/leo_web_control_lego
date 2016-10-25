@@ -16,11 +16,13 @@ $(function(){
                 draw(navigation);
             } else if (drawConnection) {
 		drawConnection = false;
-                draw(connection);
-	    } else if (disconnectFromLeo) {
-		disconnectFromLeo = false;
-		_disconnect();
-	    }
+		if (disconnectFromLeo) {
+			disconnectFromLeo = false;
+			_disconnect();
+		} else {    
+			draw(connection);
+		}
+	    } 
         }
     });
 
