@@ -3,6 +3,7 @@ $(function(){
     var oPopinHtml = $(".popin");
     var drawNavigation = false;
     var drawConnection = false;
+    var disconnectFromLeo = true;
     var isWebBTActivated = navigator.bluetooth;
 
     oPopinHtml.on("click", function(e) {
@@ -16,7 +17,10 @@ $(function(){
             } else if (drawConnection) {
 		drawConnection = false;
                 draw(connection);
-	    }	    
+	    } else if (disconnectFromLeo) {
+		disconnectFromLeo = false;
+		_disconnect();
+	    }
         }
     });
 
@@ -338,7 +342,7 @@ $(function(){
             characteristicServiceLeo.writeValue(_dataToSend(bytesWithHeader, cCommande, valuesArray)).then(value => {
             }, error => {
                 _showMessage("Erreur lors de l'envoi de la commande à LEO : " + error + ". Veuillez vous reconnecter.");
-                _disconnect();
+                disconnectFromLeo = true;
             });
         }
     }
