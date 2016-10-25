@@ -155,11 +155,9 @@ $(function(){
             [-4,-8],[-3,-8], [-2,-8],[-1,-8], [1,-8],[2,-8],[3,-8],[4,-8]
         ],
         onTouchStart : function(){
-            _callWrite(cUpdateColor, [255,0,0]);
             _callWrite(cDirection, [1]);
         },
         onTouchEnd : function(){
-            _callWrite(cUpdateColor, [0,0,0]);
             _callWrite(cDirection, [0]);
         }
     };
