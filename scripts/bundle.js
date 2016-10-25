@@ -236,7 +236,7 @@ $(function(){
             [-2,8],[2,8],[-2,11],[2,11]
         ],
         onTouchEnd : function(){
-            _disconnect();
+            _disconnect(true);
         }
     };
 
@@ -347,10 +347,12 @@ $(function(){
         }
     }
 
-    function _disconnect() {
+    function _disconnect(withMessage) {
         if (deviceLeo) {
             deviceLeo.gatt.disconnect();
-            _showMessage("Déconnexion OK !");
+            if (withMessage) {
+                _showMessage("Déconnexion OK !");
+            }
         }
         drawConnection = true;
     }
