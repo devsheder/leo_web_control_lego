@@ -1,69 +1,34 @@
-$(function(){
+window.onload = function() {
 
-    var oPopinHtml = $(".popin");
+    var oPopinHtml = document.querySelector(".popin");
     var drawNavigation = false;
     var drawConnection = false;
     var disconnectFromLeo = false;
     var isWebBTActivated = navigator.bluetooth;
-
-    oPopinHtml.on("touchend", function(e) {
-        // On ne cache pas la popin dans le cas où
-        // l'utilisateur n'a pas activé l'interface bluetooth
-        if (isWebBTActivated) {
-            oPopinHtml.hide();
-            if (drawNavigation) {
-                drawNavigation = false;
-                draw(navigation);
-            } else if (drawConnection) {
-		drawConnection = false;
-		draw(connection);
-	    } else if (disconnectFromLeo) {
-		disconnectFromLeo = false;
-		_disconnect();
-	    }
-        }
-    });
-
-    function _showMessage(message) {
-        $(".popin .message").html(message);
-        oPopinHtml.show();
-    }
-
-    if (!isWebBTActivated) {
-        isActivateWebBT = true;
-        _showMessage("Interface Web Bluetooth indisponible. Veuillez l'activer :<p><a class='link' target=\"_blank\" href=\"chrome://flags/#enable-web-bluetooth\">chrome://flags/#enable-web-bluetooth</a></p>", true);
-    }
-
     var deviceLeo = null;
     var characteristicServiceLeo = null;
     var uuidService = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
     var uuidCharacteristicService = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-
     var bytesWithHeader = [
-	   0xBA, // Static header
-       0xBA, // Static header
-       0xAA, // Static header
-       0xAA // Static header
-     ];
+        0xBA, // Static header
+        0xBA, // Static header
+        0xAA, // Static header
+        0xAA // Static header
+    ];
+    // commande couleur LED
+    var cUpdateColor = 0x03;
+    // commande direction
+    var cDirection = 0x02;
 
-     // commande couleur LED
-     var cUpdateColor = 0x03;
-     // commande direction
-     var cDirection = 0x02;
-
-  /*
-
-   Shapes
-   Objet plat acceptant 4 clés ;
-   - classes : { normal : "class1 class2" : hover : "class3 class4" }
-   - cells : Tableau des cellules concernées : [ [x1,y1], [x2,y2], ...]. Dans la grille le point [0,0] est au centre de l'écran
-   - onTouchStart : function(){ ... }
-   - onTouchEnd : function(){ ... }
-
-   */
-
+    /*
+     Shapes
+     Objet plat acceptant 4 clés ;
+     - classes : { normal : "class1 class2" : hover : "class3 class4" }
+     - cells : Tableau des cellules concernées : [ [x1,y1], [x2,y2], ...]. Dans la grille le point [0,0] est au centre de l'écran
+     - onTouchStart : function(){ ... }
+     - onTouchEnd : function(){ ... }
+     */
     // Ecran 1 : connection
-
     // Bouton connexion BT
     var bluetooth = {
         classes : {
@@ -89,27 +54,26 @@ $(function(){
                     optionalServices:[uuidService]
                 }).then(device => {
                     deviceLeo = device;
-                    // Connexion OK : récupération du service BT
-                    deviceLeo.gatt.connect().then(server => {
-                        return server.getPrimaryService(uuidService);
-                    }, error => {
-                        _showMessage("Erreur lors de la connexion à Léo : " + error);
-                    }).then(service => {
-                        return service.getCharacteristic(uuidCharacteristicService).then(characteristic => {
-                            characteristicServiceLeo = characteristic;
-                            _showMessage("Vous êtes maintenant connecté à Léo... à vous de jouer !");
-                            drawNavigation = true;
-                        });
-                    }, error => {
-                        _showMessage("Erreur lors de la connexion à Léo : " + error);
-                    });
-                }, error => {
+                // Connexion OK : récupération du service BT
+                deviceLeo.gatt.connect().then(server => {
+                    return server.getPrimaryService(uuidService);
+            }, error => {
+                    _showMessage("Erreur lors de la connexion à Léo : " + error);
+                }).then(service => {
+                    return service.getCharacteristic(uuidCharacteristicService).then(characteristic => {
+                        characteristicServiceLeo = characteristic;
+                _showMessage("Vous êtes maintenant connecté à Léo... à vous de jouer !");
+                drawNavigation = true;
+            });
+            }, error => {
+                    _showMessage("Erreur lors de la connexion à Léo : " + error);
+                });
+            }, error => {
                     _showMessage("Erreur lors de la connexion à Léo : " + error);
                 });
             }
         }
     };
-
     // Titre LEO
     var led = {
         classes : {
@@ -122,7 +86,6 @@ $(function(){
             [4,-11], [5,-11], [6,-11], [7,-10], [7,-9],[7,-8],[7,-7],[6,-7],[5,-7],[4,-7],[4,-8],[4,-9],[4,-10]
         ]
     };
-
     // Ecran 2
     var topleft = {
         classes : { normal : "grey upper", hover : "blue upper" },
@@ -130,22 +93,18 @@ $(function(){
         onTouchStart : function(){  },
         onTouchEnd : function(){  }
     };
-
     var topright = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [ [5,-10], [6,-10], [7,-10], [7,-9], [7,-8]]
     };
-
     var bottomleft = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [ [-7,2], [-7,3], [-7,4], [-6,4], [-5,4]]
     };
-
     var bottomright = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [ [7,2], [7,3], [7,4], [6,4], [5,4]]
     };
-
     var top = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [
@@ -161,7 +120,6 @@ $(function(){
             _callWrite(cDirection, [0]);
         }
     };
-
     var bottom = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [
@@ -177,7 +135,6 @@ $(function(){
             _callWrite(cDirection, [0]);
         }
     };
-
     var left = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [
@@ -193,7 +150,6 @@ $(function(){
             _callWrite(cDirection, [0]);
         }
     };
-
     var right = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [
@@ -209,7 +165,6 @@ $(function(){
             _callWrite(cDirection, [0]);
         }
     };
-
     var g = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [
@@ -227,7 +182,6 @@ $(function(){
             _callWrite(cDirection, [0]);
         }
     };
-
     var deco = {
         classes : { normal : "grey upper", hover : "blue upper" },
         cells : [
@@ -239,49 +193,83 @@ $(function(){
         }
     };
 
+    /*
+     Drawings
+     Objet plat acceptant 2 clés
 
-
-  /*
-
-   Drawings
-   Objet plat acceptant 2 clés
-
-   - size : taille minimale de la grille : { width : Number, height : Number }
-   - shapes : Tableau de shapes, voir au dessu
-
-   */
-
+     - size : taille minimale de la grille : { width : Number, height : Number }
+     - shapes : Tableau de shapes, voir au dessu
+     */
     var connection = {
         size : { width : 18, height : 26 },
         shapes : [bluetooth, led]
     };
-
     var navigation = {
         size : { width : 18, height : 26 },
         shapes : [topleft, topright, bottomleft, bottomright, top, bottom, left, right, g, deco]
     };
+    oPopinHtml.addEventListener("touchend", function(e) {
+        // On ne cache pas la popin dans le cas où
+        // l'utilisateur n'a pas activé l'interface bluetooth
+        if (isWebBTActivated) {
+            // oPopinHtml.hide();
+            oPopinHtml.style.display = "none";
+            if (drawNavigation) {
+                drawNavigation = false;
+                _draw(navigation);
+            } else if (drawConnection) {
+                drawConnection = false;
+                _draw(connection);
+            } else if (disconnectFromLeo) {
+                disconnectFromLeo = false;
+                _disconnect();
+            }
+        }
+    });
 
+    /**
+     * Permet d'afficher un message dans une popin
+     * @param message à afficher
+     * @private
+     */
+    function _showMessage(message) {
+        document.querySelector(".popin .message").innerHTML = message;
+        oPopinHtml.style.display = "";
+    }
 
-  /*
+    if (!isWebBTActivated) {
+        isActivateWebBT = true;
+        _showMessage("Interface Web Bluetooth indisponible. Veuillez l'activer :<p><a class='link' target=\"_blank\" href=\"chrome://flags/#enable-web-bluetooth\">chrome://flags/#enable-web-bluetooth</a></p>", true);
+    }
 
-   draw(draw)
-   Fonction qui dessins un drawing
+    /**
+     * Fonction qui permet de dessiner une forme
+     * @param drawing la forme à dessiner
+     */
+    function _draw(drawing){
 
-   */
+        //var oGridHtml = $(".grid");
+        var oGridHtml = document.querySelector(".grid");
+        //oGridHtml.empty();
+        oGridHtml.innerHTML = "";
 
-    function draw(drawing){
+        var body = document.body,
+            html = document.documentElement;
 
-        var oGridHtml = $(".grid");
-        oGridHtml.empty() ;
+        var screenHeight = Math.max( body.scrollHeight, body.offsetHeight,
+            html.clientHeight, html.scrollHeight, html.offsetHeight);
 
-        var screen = {
-            width : $(document).width(),
-            height : $(document).height()
-        } ;
+        var screenWidth = Math.max( body.scrollWidth, body.offsetWidth,
+            html.clientWidth, html.scrollWidth, html.offsetWidth);
 
-        var sizeX = screen.width / drawing.size.width ;
+        var screenSize = {
+            width : screenWidth,
+            height : screenHeight
+        };
+
+        var sizeX = screenSize.width / drawing.size.width ;
         sizeX = sizeX > 40 ? 40 : Math.floor(sizeX) ;
-        var sizeY = screen.height / drawing.size.height ;
+        var sizeY = screenSize.height / drawing.size.height ;
         sizeY = sizeY > 40 ? 40 : Math.floor(sizeY) ;
 
         if(sizeX < sizeY) sizeY = sizeX;
@@ -290,8 +278,8 @@ $(function(){
         var size = sizeX ;
 
         var grid = {
-            nbOfCellsX : Math.ceil(Math.ceil(screen.width / size) / 2) * 2 ,
-            nbOfCellsY : Math.ceil(Math.ceil(screen.height / size) / 2) * 2 ,
+            nbOfCellsX : Math.ceil(Math.ceil(screenSize.width / size) / 2) * 2 ,
+            nbOfCellsY : Math.ceil(Math.ceil(screenSize.height / size) / 2) * 2 ,
         };
 
         grid.minX = grid.nbOfCellsX / -2 ;
@@ -301,34 +289,56 @@ $(function(){
         grid.width = grid.nbOfCellsX * size ;
         grid.height = grid.nbOfCellsY * size ;
 
-        oGridHtml.width(grid.width) ;
-        oGridHtml.height(grid.height) ;
+        oGridHtml.style.width = grid.width + "px";
+        oGridHtml.style.height = grid.height + "px";
 
         for(var y = grid.minY ; y < grid.maxY ; y++){
             if(y === 0) continue ;
             for(var x = grid.minX ; x < grid.maxX ; x++){
                 if(x === 0) continue ;
-                var element = $('<div class="lego darkgrey" x="' + x + '" y="' + y + '"></div>') ;
-                element.width(size).height(size) ;
-                oGridHtml.append(element) ;
+                var element = document.createElement("div");
+                element.className = "lego darkgrey";
+                element.setAttribute("x",x);
+                element.setAttribute("y",y);
+                element.style.width = size+"px";
+                element.style.height = size+"px";
+                oGridHtml.appendChild(element);
             }
         }
 
-        _.each(drawing.shapes, function(shape){
-            var selector = _.map(shape.cells, function(cell){ return('[x="'+ cell[0] +'"][y="'+ cell[1] +'"]') ; }).join(",") ;
-            var elements = $(selector) ;
-            elements
-                .addClass(shape.classes.normal)
-                .on("touchstart", function(){
-                    elements.removeClass(shape.classes.normal).addClass(shape.classes.hover) ;
-                    if(_.isFunction(shape.onTouchStart)) shape.onTouchStart() ;
-                })
-                .on("touchend", function(){
-                    elements.removeClass(shape.classes.hover).addClass(shape.classes.normal) ;
-                    if(_.isFunction(shape.onTouchEnd)) shape.onTouchEnd() ;
-                })
+        drawing.shapes.forEach(function(shape) {
+            // On calcul les sélecteurs DOM pour aller chercher toutes les divs qui forment le dessin
+            var selectors = shape.cells.map(function(cell){ return('[x="'+ cell[0] +'"][y="'+ cell[1] +'"]') ; });
+            // Parcours des divs qui forment le dessin
+            var selector = selectors.forEach(function(selectorCell) {
+                // Récupération de la div
+                var cell = document.querySelector(selectorCell);
+                // On appplique la classe CSS indiquée
+                cell.className += " " + shape.classes.normal;
+                // Event touchstart
+                cell.addEventListener("touchstart", function() {
+                    // Pour chaque div qui forme le dessin, on applique le changement de classe CSS
+                    selectors.forEach(function(selectorCellEvent) {
+                        var cellEvent = document.querySelector(selectorCellEvent);
+                        cellEvent.className = cellEvent.className.replace(shape.classes.normal, shape.classes.hover);
+                    });
+                    if (typeof shape.onTouchStart === "function") {
+                        shape.onTouchStart();
+                    }
+                });
+                // Event touchend
+                cell.addEventListener("touchend", function() {
+                    // Pour chaque div qui forme le dessin, on applique le changement de classe CSS
+                    selectors.forEach(function(selectorCellEvent) {
+                        var cellEvent = document.querySelector(selectorCellEvent);
+                        cellEvent.className = cellEvent.className.replace(shape.classes.hover, shape.classes.normal);
+                    });
+                    if (typeof shape.onTouchEnd === "function") {
+                        shape.onTouchEnd();
+                    }
+                });
+            });
         });
-
     }
 
     /**
@@ -344,8 +354,8 @@ $(function(){
                 disconnectFromLeo = true;
             });
         } else {
-		_disconnect();
-	}
+            _disconnect();
+        }
     }
 
     /**
@@ -362,42 +372,48 @@ $(function(){
                 drawConnection = true;
                 _showMessage("Déconnexion OK !");
             } else {
-                draw(connection);
-	    }
+                _draw(connection);
+	        }
         } else {
-            draw(connection);
-	}
+            _draw(connection);
+        }
     }
 
+    /**
+     * Crée les données à envoyer
+     * @param headerBytes
+     * @param commandByte
+     * @param byteValue
+     * @returns {ArrayBuffer}
+     * @private
+     */
     function _dataToSend(headerBytes, commandByte, byteValue) {
         var buf = new ArrayBuffer(headerBytes.length + 1 + byteValue.length);
         var bufView = new Uint8Array(buf);
         var idx = 0;
 
         for (let i = 0; i < headerBytes.length; i+=1) {
-          bufView[idx++] = headerBytes[i];
+            bufView[idx++] = headerBytes[i];
         }
 
         bufView[idx++] = commandByte;
 
         // Gestion de l'inversion par paire des bytes
         for (let i = 0; i < byteValue.length; i+=1) {
-          bufView[idx++] = byteValue[i];
+            bufView[idx++] = byteValue[i];
         }
         return buf;
     }
 
-    jQuery(window).on('resize', _.debounce(function(){
-	    if (deviceLeo && deviceLeo.gatt.connected) {
-                draw(navigation);
-	    } else {
-                draw(connection);
-	    }
-    }, 0));
-
+    window.onresize = function() {
+        if (deviceLeo && deviceLeo.gatt.connected) {
+            _draw(navigation);
+        } else {
+            _draw(connection);
+        }
+    };
 
     // Point d'entrée
+    _draw(connection);
 
-    draw(connection);
-
-});
+};
